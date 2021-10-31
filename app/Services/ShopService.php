@@ -36,6 +36,7 @@ class ShopService
             $folder = 'images';
             $fileName = $data->video;
             $this->common->delete_image($fileName, $folder);
+            $delete = Product::where('id', $id)->delete();
             return true;
         } else {
             return false;

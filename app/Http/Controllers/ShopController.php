@@ -46,6 +46,19 @@ class ShopController extends Controller
 
         return Datatables::of($arrItem)
             ->addIndexColumn()
+            ->addColumn('Product', function ($row) {
+                $url    = url('product/product') . '/' . $row['id'];
+                $action = '<center>
+                    <a href="' . $url . '" title="Edit" class="btn btn-sm btn-primary">
+                        Product List
+                    </a>
+
+                    &nbsp
+
+                </center>';
+
+                return $action;
+            })
             ->addColumn('action', function ($row) {
                 $url    = url('shop/edit-shop') . '/' . $row['id'];
                 $action1 = '<center>
@@ -62,7 +75,7 @@ class ShopController extends Controller
 
                 return $action1;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['Product','action'])
             ->make(true);
     }
 
@@ -134,6 +147,6 @@ class ShopController extends Controller
         $id = $request->get('id');
         $this->ShopService->DeleteShop($id);
 
-        return redirect('admin/category/category');
+        return redirect('shop/shop');
     }
 }

@@ -8,7 +8,7 @@
 <!-- Breadcromb Row Start -->
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>Shop</h2>
+        <h2>Product</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ url('admin/dashboard') }}">Home</a>
@@ -16,8 +16,11 @@
             <li class="breadcrumb-item">
                 <a href="{{ url('shop/shop') }}">Shop</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{ url('product/product').'/'.$id }}">Product</a>
+            </li>
             <li class="breadcrumb-item active">
-                <strong>Add Shop</strong>
+                <strong>Bulk Import Product</strong>
             </li>
         </ol>
     </div>
@@ -29,7 +32,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Add Shop</h5>
+                    <h5>Bulk Import Product</h5>
 
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -44,48 +47,29 @@
                         <div class="sk-double-bounce2"></div>
                     </div>
 
-                    <form role="form" id="addForm" method="post" enctype="multipart/form-data" action="{{ url('shop/insert-shop') }}">
+                    <form role="form" id="addForm" method="post" enctype="multipart/form-data" action="{{ url('product/bulk-insert-product') }}">
                         {{ csrf_field() }}
+                        <input type="hidden" name="id" id="id" value="{{$id}}">
                         <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Shop Name:</label>
-                                <input type="text" name="shop_name" id="shop_name" placeholder="Please Enter Shop Name" class="form-control" autofocus>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Upload File:</label>
+                                    <input type="file" name="bulk" id="bulk" placeholder="Please Enter Upload File" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Address:</label>
-                                <textarea type="text" name="address" id="address" placeholder="Please Enter Address" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Email :</label>
-                                <input type="text" name="email" id="email" placeholder="Please Enter Email " class="form-control" autofocus>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Shop Image:</label>
-                                <input type="file" name="image" id="image" placeholder="Please Enter Image" class="form-control">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6">
+                                <button type="submit" id="sbmt" class="btn btn-sm btn-primary m-t-n-xs">
+                                    <strong>Submit</strong>
+                                </button>
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
-                        </div>
-                        <div class="col-sm-6">
-                            <button type="submit" id="sbmt" class="btn btn-sm btn-primary m-t-n-xs disable">
-                                <strong>Submit</strong>
-                            </button>
-                        </div>
+                    </form>
                 </div>
-
-                </form>
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection
 
@@ -95,23 +79,15 @@
     $(document).ready(function() {
         $("#addForm").validate({
             rules: {
-                shop_name: {
-                    required: true
-                },
-                address: {
-                    required: true
-                },
-                email: {
+                bulk: {
                     required: true,
-                    email: true,
-                },
-                image: {
-                    required: true,
-                    extension: "jpg|jpeg|png|ico|bmp"
+                    extension: "csv"
                 },
             },
             messages: {
-
+                bulk: {
+                    extension: 'Select csv file.'
+                }
             }
         });
 

@@ -30,3 +30,17 @@ Route::prefix('shop')->group(function () {
     Route::get('edit-shop/{id}', [ShopController::class, 'EditShop']);
     Route::post('update-shop', [ShopController::class, 'UpdateShop']);
 });
+Route::prefix('product')->group(function () {
+    Route::get('product/{id}', [ProductController::class, 'ProductList']);
+    Route::get('productDataTable/{id}', [ProductController::class, 'ProductListDataTable']);
+    Route::get('add-product/{id}', [ProductController::class, 'AddProduct']);
+    Route::post('add-product/check-product_name', [ProductController::class, 'CheckProduct']);
+    Route::post('insert-product', [ProductController::class, 'InsertProduct']);
+    Route::post('delete-product', [ProductController::class, 'DeleteProduct']);
+    Route::get('edit-product/{id}/{ProductId}', [ProductController::class, 'EditProduct']);
+    Route::post('update-product', [ProductController::class, 'UpdateProduct']);
+    Route::post('edit-product/{id}/check-product_name', [ProductController::class, 'UpdateCheckProduct']);
+
+    Route::get('bulk-product/{id}', [ProductController::class, 'BulkProduct']);
+    Route::post('bulk-insert-product', [ProductController::class, 'InsertBulkProduct']);
+});

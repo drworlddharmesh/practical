@@ -13,13 +13,16 @@
 <!-- Breadcromb Row Start -->
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2>Shop</h2>
+        <h2>Product</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ url('admin/dashboard') }}">Home</a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="{{ url('shop/shop') }}">Shop</a>
+            </li>
             <li class="breadcrumb-item active">
-                <strong>Shop</strong>
+                <strong>Product</strong>
             </li>
         </ol>
     </div>
@@ -31,11 +34,14 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Shop List</h5>
+                    <h5>Product List</h5>
 
                     <div class="ibox-tools">
-                        <a href="{{ url('shop/add-shop') }}" class="btn btn-sm btn-primary m-t-n-xs">
-                            Add New Shop
+                        <a href="{{ url('product/add-product').'/'.$id }}" class="btn btn-sm btn-primary m-t-n-xs">
+                            Add New Product
+                        </a>
+                        <a href="{{ url('product/bulk-product').'/'.$id }}" class="btn btn-sm btn-primary m-t-n-xs">
+                            Bulk Import
                         </a>
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -50,19 +56,18 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="ShopDatatable" class="table table-striped table-bordered table-hover dataTables-example" style="width: 100%;">
+                        <table id="CategoryDatatable" class="table table-striped table-bordered table-hover dataTables-example" style="width: 100%;">
                             <thead>
                                 <tr>
-
                                     <th>#</th>
-                                    <th>Shop Id</th>
-                                    <th>Shop Name</th>
-                                    <th>Shop Address</th>
-                                    <th>Shop Email</th>
-                                    <th>Shop Img</th>
+                                    <th>Product Id</th>
+                                    <th>shop_id</th>
+                                    <th>Product Name</th>
+                                    <th>Product Video</th>
+                                    <th>price</th>
+                                    <th>stock</th>
                                     <th>Created At</th>
                                     <th>Updated At</th>
-                                    <th>Product List</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -85,48 +90,55 @@
 <script>
     $(document).ready(function() {
         // Show Data Table Datas
-        var oTable = $('#ShopDatatable').DataTable({
+        var Id = {{$id}};
+        var oTable = $('#CategoryDatatable').DataTable({
             proccessing: true,
             serverSide: true,
-            ajax: '{!! route('ShopDataTable') !!}',
+            ajax: '{!! url('product/productDataTable').'/' !!}'+Id,
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
+                    searchable: false
                 },
                 {
                     data: 'id',
                     name: 'id',
+                    searchable: false
                 },
                 {
-                    data: 'shop_name',
-                    name: 'shop_name',
+                    data: 'shop_id',
+                    name: 'shop_id',
+                    searchable: false
                 },
                 {
-                    data: 'address',
-                    name: 'address',
+                    data: 'product_name',
+                    name: 'product_name',
+                    searchable: false
                 },
                 {
-                    data: 'email',
-                    name: 'email',
-                },
-                {
-                    data: 'image',
-                    name: 'image',
+                    data: 'video',
+                    name: 'video',
                     "render": function(data, type, full, meta) {
-                        return "<img src=\"" + data + "\" width=\"50px\" height=\"50px\">";
+                        return "<a href=\"" + data + "\" target='__blank'><video src=\"" + data + "\" width=\"100px\" height=\"100px\"></a>";
                     },
+                    searchable: false
+                },
+                {
+                    data: 'price',
+                    name: 'price',
+                },
+                {
+                    data: 'stock',
+                    name: 'stock',
                 },
                 {
                     data: 'created_at',
                     name: 'created_at',
+                    searchable: false
                 },
                 {
                     data: 'updated_at',
                     name: 'updated_at',
-                },
-                {
-                    data: 'Product',
-                    name: 'Product',
                     searchable: false
                 },
                 {
@@ -142,7 +154,7 @@
             "aaSorting": [],
             "aoColumnDefs": [{
                 'bSortable': false,
-                'aTargets': [8,9]
+                'aTargets': [9]
             }],
         });
 
@@ -175,10 +187,10 @@
         @endif
     });
 
-    function DeleteShop(id) {
+    function DeleteProduct(id,ProductId) {
         swal({
-            title: "Delete Shop",
-            text: "Are you sure you want to delete this Shop?",
+            title: "Delete Product",
+            text: "Are you sure you want to delete this Product?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -186,10 +198,11 @@
             closeOnConfirm: false
         }, function() {
             $.ajax({
-                url: 'delete-shop',
+                url: '{!! url("product/delete-product") !!}',
                 type: 'POST',
                 data: {
                     "_token": "{{ csrf_token() }}",
+                    ProductId: ProductId,
                     id: id,
                 },
                 success: function(data) {

@@ -18,12 +18,12 @@ class Product extends Model
         'updated_at' => 'datetime:d/m/Y h:m:s',
     ];
     protected $appends = [
-        'image_url'
+        'video_url'
     ];
 
 
-    public function getImageUrlAttribute()
+    public function getVideoUrlAttribute()
     {
-        return url('storage') . self::IMAGE_PATH . '/' . $this->image;
+        return url('storage') . self::IMAGE_PATH . '/' . $this->video;
     }
 }

@@ -46,8 +46,31 @@
 
                     <form role="form" id="editForm" method="post" enctype="multipart/form-data" action="{{ url('shop/update-shop') }}">
                         {{ csrf_field() }}
-
-
+                        <input type="hidden" name="id" id="id" value="{{$ShopData->id}}">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Shop Name:</label>
+                                <input type="text" name="shop_name" id="shop_name" placeholder="Please Enter Shop Name" class="form-control" autofocus value="{{$ShopData->shop_name}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Address:</label>
+                                <textarea type="text" name="address" id="address" placeholder="Please Enter Address" class="form-control">{{$ShopData->address}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email :</label>
+                                <input type="text" name="email" id="email" placeholder="Please Enter Email " class="form-control" autofocus value="{{$ShopData->email}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Shop Image:</label>
+                                <input type="file" name="image" id="image" placeholder="Please Enter Image" class="form-control">
+                            </div>
+                        </div>
                         <div class="col-sm-6"></div>
                         <div class="col-sm-6">
                             <button type="submit" id="sbmt" class="btn btn-sm btn-primary m-t-n-xs disable">
@@ -73,7 +96,19 @@
     $(document).ready(function() {
         $("#editForm").validate({
             rules: {
-
+                shop_name: {
+                    required: true
+                },
+                address: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true,
+                },
+                image: {
+                    extension: "jpg|jpeg|png|ico|bmp"
+                },
             },
             messages: {
 
